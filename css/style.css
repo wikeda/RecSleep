@@ -139,13 +139,20 @@ section h2 {
     padding: 12px;
   }
   
-  .form-row {
-    flex-direction: column;
-    align-items: stretch;
+  .form-group-row {
+    gap: 6px;
+  }
+  
+  .form-select-time {
+    min-width: 60px;
   }
   
   .separator {
-    display: none;
+    font-size: 14px;
+  }
+  
+  .form-unit {
+    font-size: 13px;
   }
 }
 
