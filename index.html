@@ -15,11 +15,19 @@
   </header>
   
   <main class="main">
-    <!-- グラフセクション（フェーズ3で実装） -->
+    <!-- グラフセクション -->
     <section class="chart-section">
-      <div class="chart-tabs">
-        <button id="week-tab" class="tab active">週次</button>
-        <button id="month-tab" class="tab">月次</button>
+      <div class="chart-header">
+        <div class="chart-tabs">
+          <button id="week-tab" class="tab active">週次</button>
+          <button id="month-tab" class="tab">月次</button>
+        </div>
+        <div class="chart-controls">
+          <button id="week-prev-btn" class="btn-nav" onclick="moveWeekBackward()">←</button>
+          <span id="week-label" class="period-label">今週</span>
+          <button id="month-prev-btn" class="btn-nav hidden" onclick="moveMonthBackward()">←</button>
+          <span id="month-label" class="period-label hidden">今月</span>
+        </div>
       </div>
       <div id="chart-container" class="chart-container">
         <canvas id="sleep-chart"></canvas>
@@ -82,6 +90,34 @@
   <script src="js/chart.js"></script>
   <script src="js/export.js"></script>
   <script src="js/app.js"></script>
+  <script>
+    // Chart.jsの読み込み完了を待ってからアプリを初期化
+    window.addEventListener('DOMContentLoaded', function() {
+      if (typeof Chart !== 'undefined' && typeof initApp === 'function') {
+        initApp();
+      } else {
+        // Chart.jsが読み込まれるまで待つ
+        const checkChart = setInterval(function() {
+          if (typeof Chart !== 'undefined' && typeof initApp === 'function') {
+            clearInterval(checkChart);
+            initApp();
+          }
+        }, 50);
+        
+        // タイムアウト（5秒後）
+        setTimeout(function() {
+          clearInterval(checkChart);
+          if (typeof Chart === 'undefined') {
+            console.error('Chart.js failed to load');
+          } else if (typeof initApp === 'function') {
+            initApp();
+          } else {
+            console.error('initApp is not defined');
+          }
+        }, 5000);
+      }
+    });
+  </script>
 </body>
 </html>
 
