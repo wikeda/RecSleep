@@ -62,6 +62,12 @@ function formatDisplayDate(dateStr) {
  * @param {string} periodType - 期間タイプ（'week' | 'month'）
  */
 function createChart(canvas, data, periodType) {
+  // Chart.jsが読み込まれているか確認
+  if (typeof Chart === 'undefined') {
+    console.error('Chart.js is not loaded');
+    return;
+  }
+  
   const chartData = {
     labels: data.map(d => formatDisplayDate(d.date)),
     datasets: [
@@ -132,7 +138,11 @@ function createChart(canvas, data, periodType) {
     sleepChart.destroy();
   }
   
-  sleepChart = new Chart(canvas, config);
+  try {
+    sleepChart = new Chart(canvas, config);
+  } catch (error) {
+    console.error('Failed to create chart:', error);
+  }
 }
 
 /**
@@ -269,6 +279,11 @@ function moveWeekBackward() {
   currentWeekOffset--;
   updateWeekChart();
   updateNavButtons();
+  // コントロールの表示を維持（週次コントロールを表示）
+  const weekControls = document.querySelectorAll('#week-prev-btn, #week-label');
+  const monthControls = document.querySelectorAll('#month-prev-btn, #month-label');
+  weekControls.forEach(ctrl => ctrl.classList.remove('hidden'));
+  monthControls.forEach(ctrl => ctrl.classList.add('hidden'));
 }
 
 /**
@@ -295,6 +310,11 @@ function moveMonthBackward() {
   currentMonthOffset--;
   updateMonthChart();
   updateNavButtons();
+  // コントロールの表示を維持（月次コントロールを表示）
+  const weekControls = document.querySelectorAll('#week-prev-btn, #week-label');
+  const monthControls = document.querySelectorAll('#month-prev-btn, #month-label');
+  weekControls.forEach(ctrl => ctrl.classList.add('hidden'));
+  monthControls.forEach(ctrl => ctrl.classList.remove('hidden'));
 }
 
 /**
@@ -341,22 +361,36 @@ function setupChartTabs() {
   if (weekTab) {
     weekTab.addEventListener('click', function() {
       weekTab.classList.add('active');
-      monthTab.classList.remove('active');
-      // 週のオフセットをリセット
+      if (monthTab) monthTab.classList.remove('active');
+      // 週のオフセットをリセット（タブ切り替え時のみ）
       currentWeekOffset = 0;
       updateWeekChart();
       updateNavButtons();
+      // コントロールの表示を切り替え
+      if (typeof setupChartControls === 'function') {
+        const weekControls = document.querySelectorAll('#week-prev-btn, #week-label');
+        const monthControls = document.querySelectorAll('#month-prev-btn, #month-label');
+        weekControls.forEach(ctrl => ctrl.classList.remove('hidden'));
+        monthControls.forEach(ctrl => ctrl.classList.add('hidden'));
+      }
     });
   }
   
   if (monthTab) {
     monthTab.addEventListener('click', function() {
       monthTab.classList.add('active');
-      weekTab.classList.remove('active');
-      // 月のオフセットをリセット
+      if (weekTab) weekTab.classList.remove('active');
+      // 月のオフセットをリセット（タブ切り替え時のみ）
       currentMonthOffset = 0;
       updateMonthChart();
       updateNavButtons();
+      // コントロールの表示を切り替え
+      if (typeof setupChartControls === 'function') {
+        const weekControls = document.querySelectorAll('#week-prev-btn, #week-label');
+        const monthControls = document.querySelectorAll('#month-prev-btn, #month-label');
+        weekControls.forEach(ctrl => ctrl.classList.add('hidden'));
+        monthControls.forEach(ctrl => ctrl.classList.remove('hidden'));
+      }
     });
   }
 }
@@ -365,31 +399,13 @@ function setupChartTabs() {
  * グラフコントロールの表示切り替えを設定する
  */
 function setupChartControls() {
-  const weekTab = document.getElementById('week-tab');
-  const monthTab = document.getElementById('month-tab');
-  const weekControls = document.querySelectorAll('#week-prev-btn, #week-next-btn, #week-label');
-  const monthControls = document.querySelectorAll('#month-prev-btn, #month-next-btn, #month-label');
-  
-  function showWeekControls() {
+  // 初期状態は週次を表示
+  const weekControls = document.querySelectorAll('#week-prev-btn, #week-label');
+  const monthControls = document.querySelectorAll('#month-prev-btn, #month-label');
+  if (weekControls.length > 0 && monthControls.length > 0) {
     weekControls.forEach(ctrl => ctrl.classList.remove('hidden'));
     monthControls.forEach(ctrl => ctrl.classList.add('hidden'));
   }
-  
-  function showMonthControls() {
-    weekControls.forEach(ctrl => ctrl.classList.add('hidden'));
-    monthControls.forEach(ctrl => ctrl.classList.remove('hidden'));
-  }
-  
-  if (weekTab) {
-    weekTab.addEventListener('click', showWeekControls);
-  }
-  
-  if (monthTab) {
-    monthTab.addEventListener('click', showMonthControls);
-  }
-  
-  // 初期状態は週次を表示
-  showWeekControls();
   updateNavButtons();
 }
 

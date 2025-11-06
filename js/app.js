@@ -17,11 +17,19 @@ function initApp() {
   updateRecentRecordsTable();
   
   // グラフの初期表示（週次をデフォルト）
-  if (typeof updateWeekChart === 'function') {
-    updateWeekChart();
-  }
+  // Chart.jsの読み込みを待つ
+  setTimeout(function() {
+    if (typeof Chart !== 'undefined' && typeof updateWeekChart === 'function') {
+      updateWeekChart();
+    } else {
+      console.warn('Chart.js or updateWeekChart is not available');
+    }
+  }, 100);
   
   // グラフコントロールの表示切り替え（chart.jsで設定）
+  if (typeof setupChartControls === 'function') {
+    setupChartControls();
+  }
 }
 
 /**
