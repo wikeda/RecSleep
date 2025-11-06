@@ -54,27 +54,40 @@
     <!-- 入力フォーム -->
     <section class="input-form">
       <form id="sleep-form">
-        <div class="form-row">
-          <select id="date-select" name="date" required>
-            <!-- 過去7日を動的に生成 -->
-          </select>
-          <select id="hour-select" name="hour" required>
-            <!-- 00-23を動的に生成 -->
-          </select>
-          <span class="separator">:</span>
-          <select id="minute-select" name="minute" required>
-            <!-- 00-55を5分刻みで生成 -->
-          </select>
-          <span class="separator">〜</span>
-          <select id="duration-hour-select" name="durationHour" required>
-            <!-- 00-23を動的に生成 -->
-          </select>
-          <span class="separator">:</span>
-          <select id="duration-minute-select" name="durationMinute" required>
-            <!-- 00-55を5分刻みで生成 -->
-          </select>
-          <button type="submit" class="btn-submit">記録する</button>
+        <!-- 睡眠開始日時グループ -->
+        <div class="form-group">
+          <label class="form-label">睡眠開始日時</label>
+          <div class="form-group-row">
+            <select id="date-select" name="date" class="form-select" required>
+              <!-- 過去7日を動的に生成 -->
+            </select>
+            <select id="hour-select" name="hour" class="form-select form-select-time" required>
+              <!-- 00-23を動的に生成 -->
+            </select>
+            <span class="separator">:</span>
+            <select id="minute-select" name="minute" class="form-select form-select-time" required>
+              <!-- 00-55を5分刻みで生成 -->
+            </select>
+          </div>
         </div>
+        
+        <!-- 睡眠時間グループ -->
+        <div class="form-group">
+          <label class="form-label">睡眠時間</label>
+          <div class="form-group-row">
+            <select id="duration-hour-select" name="durationHour" class="form-select form-select-time" required>
+              <!-- 00-23を動的に生成 -->
+            </select>
+            <span class="form-unit">時間</span>
+            <select id="duration-minute-select" name="durationMinute" class="form-select form-select-time" required>
+              <!-- 00-55を5分刻みで生成 -->
+            </select>
+            <span class="form-unit">分</span>
+          </div>
+        </div>
+        
+        <!-- 記録ボタン -->
+        <button type="submit" class="btn-submit">記録する</button>
       </form>
     </section>
   </main>

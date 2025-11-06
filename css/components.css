@@ -104,6 +104,75 @@ select:disabled {
   cursor: not-allowed;
 }
 
+/* フォームグループ */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group:last-child {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.form-group-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.form-select {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: #ffffff;
+  color: #1f2937;
+  min-height: 44px;
+  touch-action: manipulation;
+  flex: 1;
+}
+
+/* 日付セレクトは幅を広く */
+#date-select.form-select {
+  flex: 1 1 auto;
+  min-width: 140px;
+}
+
+.form-select-time {
+  flex: 0 0 auto;
+  min-width: 70px;
+  text-align: center;
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.separator {
+  font-weight: 600;
+  color: #6b7280;
+  font-size: 16px;
+  flex: 0 0 auto;
+}
+
+.form-unit {
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: 500;
+  flex: 0 0 auto;
+  margin: 0 4px;
+}
+
 /* テーブル */
 .records-table {
   width: 100%;
@@ -302,6 +371,20 @@ select:disabled {
   .tab {
     font-size: 13px;
     padding: 6px 12px;
+  }
+  
+  .form-group {
+    margin-bottom: 14px;
+  }
+  
+  .form-label {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+  
+  .form-select {
+    font-size: 14px;
+    padding: 8px 10px;
   }
   
   .modal-content {
