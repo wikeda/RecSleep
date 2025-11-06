@@ -89,7 +89,32 @@
   <script src="js/ui.js"></script>
   <script src="js/chart.js"></script>
   <script src="js/export.js"></script>
-  <script src="js/app.js"></script>
+  <script>
+    // Chart.jsの読み込み完了を待ってからアプリを初期化
+    window.addEventListener('DOMContentLoaded', function() {
+      if (typeof Chart !== 'undefined') {
+        initApp();
+      } else {
+        // Chart.jsが読み込まれるまで待つ
+        const checkChart = setInterval(function() {
+          if (typeof Chart !== 'undefined') {
+            clearInterval(checkChart);
+            initApp();
+          }
+        }, 50);
+        
+        // タイムアウト（5秒後）
+        setTimeout(function() {
+          clearInterval(checkChart);
+          if (typeof Chart === 'undefined') {
+            console.error('Chart.js failed to load');
+          } else {
+            initApp();
+          }
+        }, 5000);
+      }
+    });
+  </script>
 </body>
 </html>
 
