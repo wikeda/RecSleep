@@ -164,19 +164,15 @@ function openEditModal(recordId) {
     // 日付選択のオプションを再生成（過去7日）
     populateDateOptions(dateSelect);
     const dateStr = formatDate(startDate);
-    // 該当する日付が選択肢にあるか確認
-    let found = false;
-    for (let i = 0; i < dateSelect.options.length; i++) {
-      if (dateSelect.options[i].value === dateStr) {
-        dateSelect.selectedIndex = i;
-        found = true;
-        break;
-      }
+    // 該当する日付が選択肢にない場合は追加して選択
+    const hasExistingOption = Array.from(dateSelect.options).some(option => option.value === dateStr);
+    if (!hasExistingOption) {
+      const option = document.createElement('option');
+      option.value = dateStr;
+      option.textContent = `${dateStr} (記録日)`;
+      dateSelect.appendChild(option);
     }
-    // 見つからない場合は最初のオプションを選択
-    if (!found && dateSelect.options.length > 0) {
-      dateSelect.selectedIndex = 0;
-    }
+    dateSelect.value = dateStr;
   }
   
   if (hourSelect) {
@@ -395,4 +391,6 @@ function initHistoryPage() {
 
 // DOMContentLoaded時に初期化
 document.addEventListener('DOMContentLoaded', initHistoryPage);
+
+
 
