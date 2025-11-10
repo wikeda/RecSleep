@@ -124,6 +124,24 @@ function createChart(canvas, data, periodType) {
           stacked: true,
           grid: {
             display: false
+          },
+          ticks: {
+            color: function(context) {
+              // ラベルのインデックスから元の日付データを取得
+              const index = context.index;
+              if (index >= 0 && index < data.length) {
+                const dateStr = data[index].date; // YYYY-MM-DD形式
+                const date = new Date(dateStr + 'T00:00:00');
+                const dayOfWeek = date.getDay(); // 0=日曜日, 6=土曜日
+
+                if (dayOfWeek === 0) {
+                  return '#ef4444'; // 日曜日: 赤
+                } else if (dayOfWeek === 6) {
+                  return '#3b82f6'; // 土曜日: 青
+                }
+              }
+              return '#666666'; // 平日: グレー
+            }
           }
         },
         y: {
